@@ -11,10 +11,7 @@
     <section class="container">
         <div class="row">
             @foreach ($medias as $media)
-                <figure class="figure col-12 col-md-4">
-                    <img src="{{ $media->original() }}" class="figure-img img-fluid rounded" alt="...">
-                    <figcaption class="figure-caption">A caption for the above image.</figcaption>
-                </figure>
+                {{ $media->render('col-12 col-md-6') }}
             @endforeach
         </div>
 

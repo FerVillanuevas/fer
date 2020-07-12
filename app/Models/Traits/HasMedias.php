@@ -36,6 +36,22 @@ trait HasMedias
         return $base64;
     }
 
+    public function render(String $class)
+    {
+        $driver = Storage::disk('public')->getDriver();
+        $server = ServerFactory::create([
+            'response' => new LaravelResponseFactory(app('request')),
+            'source' => $driver,
+            'cache' =>  $driver,
+            'cache_path_prefix' => '.cache',
+            'base_url' => 'img',
+        ]);
+
+        $base64 = $server->getImageAsBase64($this->getPath(), []);
+
+        return \view('components.image', \compact('base64', 'class'));
+    }
+
     public function original()
     {
         $driver = Storage::disk('public')->getDriver();
