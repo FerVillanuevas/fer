@@ -14,16 +14,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $videos = App\Models\Video::with('tags')->get();
-    $posts = App\Models\Post::with('tags')->get();
+    $videos = App\Models\Video::all();
+    $posts = App\Models\Post::with('medias')->get();
     $tags = App\Models\Tag::with('posts')->with('videos')->get();
-    return [
+    return view('welcome',[
         'videos' => $videos,
         'posts' => $posts,
         'tags' => $tags,
-    ];
+    ]);
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('media', 'Admin\MediaController');
