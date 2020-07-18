@@ -15,7 +15,7 @@ trait HasMedias
         return $this->path;
     }
 
-    public function getImage()
+    private function server($type, array $params = [])
     {
         $driver = Storage::disk('public')->getDriver();
         $server = ServerFactory::create([
@@ -25,31 +25,27 @@ trait HasMedias
             'cache_path_prefix' => '.cache',
             'base_url' => 'img',
         ]);
+
+        return $server->$type($this->getPath(), $params);
+
+
+    }
+
+    public function getImage()
+    {
         $params = array_filter([
             'h' => $this->pivot->h,
             'w' => $this->pivot->w,
             'crop' => $this->pivot->crop,
             'flip' => $this->pivot->flip
         ]);
-        $base64 = $server->getImageAsBase64($this->getPath(), $params);
 
-        return $base64;
+        return $this->server('getImageAsBase64', $params);
     }
 
     public function original()
     {
-        $driver = Storage::disk('public')->getDriver();
-        $server = ServerFactory::create([
-            'response' => new LaravelResponseFactory(app('request')),
-            'source' => $driver,
-            'cache' =>  $driver,
-            'cache_path_prefix' => '.cache',
-            'base_url' => 'img',
-        ]);
-
-        $base64 = $server->getImageAsBase64($this->getPath(), []);
-
-        return $base64;
+        return $this->server('getImageAsBase64');
     }
 
     public function medias()
