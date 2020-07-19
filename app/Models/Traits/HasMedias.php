@@ -48,6 +48,13 @@ trait HasMedias
         return $this->server('getImageAsBase64');
     }
 
+    public function render()
+    {
+        return view('blocks.media', [
+            'url' => $this->original(),
+        ]);
+    }
+
     public function medias()
     {
         return $this->morphToMany('App\Models\Media', 'mediables')

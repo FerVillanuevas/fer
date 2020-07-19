@@ -29,3 +29,6 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('media', 'Admin\MediaController');
+
+
+Route::resource('post', 'Admin\ClabController');
